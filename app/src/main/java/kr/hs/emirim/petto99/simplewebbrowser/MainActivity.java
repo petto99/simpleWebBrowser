@@ -3,7 +3,9 @@ package kr.hs.emirim.petto99.simplewebbrowser;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,6 +23,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         web=(WebView)findViewById(R.id.web);
         butMove.setOnClickListener(this);
         butPrev.setOnClickListener(this);
+
+        web.setWebViewClient(new WebViewClient());
+        WebSettings webset=web.getSettings();
+        webset.setBuiltInZoomControls(true);
+        webset.setJavaScriptEnabled(true);
+
+        //web.loadUrl(editUrl.getText().toString());
     }
 
     /**
@@ -30,6 +39,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onClick(View v) {
-
+        String url=null;
+        switch (v.getId()){
+            case R.id.but_move :
+                url=editUrl.getText().toString();
+                if(!url.contains("http"))
+                    url="http://"+url;
+                web.loadUrl(url);
+                break;
+            case R.id.but_prev :
+                web.goBack();
+                break;
+        }
     }
 }
